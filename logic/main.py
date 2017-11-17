@@ -1,6 +1,6 @@
 from __future__ import division
 
-import mysql.connector, subprocess, os
+import mysql.connector, subprocess, os, matplotlib.pyplot as plt
 
 def shellscript():
     #bashCommand1 = "sshpass -p 'vagrant' scp ~/remy/vagrant/mysql/caloricdata vagrant@172.31.255.196:/tmp/mydata.txt"
@@ -11,6 +11,7 @@ def shellscript():
     #process2 = subprocess.Popen(bashCommand2.split(), stdout=subprocess.PIPE)
     #output, error = process2.communicate()
     os.system("sshpass -p 'vagrant' ssh -o StrictHostKeyChecking=no vagrant@172.31.255.196 ls -l /tmp")
+
 
 def macroCalc(food,grams):
 
@@ -47,18 +48,26 @@ def macroCalc(food,grams):
                 prot_sum += float(int(grams[k]) / 100) * float(row[4])
 
     print "SUM: Calories", cal_sum, "Fat", fat_sum, "Carb", carb_sum, "Protein", prot_sum
-
+    pie_chart(cal_sum,fat_sum,carb_sum,prot_sum)
     con.close()
+
+def pie_chart(a,b,c,d):
+    labels = 'Calories', 'Fat', 'Carb', 'Protein'
+    sizes = [a, b, c, d]
+    colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']
+    explode = (0.1, 0, 0, 0)  # explode 1st slice
+
+    # Plot
+    plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+            autopct='%1.1f%%', shadow=True, startangle=140)
+
+    plt.axis('equal')
+    plt.show()
+
 
 meal = ["wolowina","papryki","wolowina","papryki"]
 grams = ["200", "100","100", "200"]
 
-macroCalc(raw_input("Meal: ").split(),raw_input("Grams: ").split())
-#macroCalc(meal,grams)
-
-#macroCalc("chicken",230)
-
-#print meal["chicken"], chicken["fat"]
-#i = 0
-#for i in range(len(meal)):
-#    print meal[i], grams[i]
+#macroCalc(raw_input("Meal: ").split(),raw_input("Grams: ").split())
+macroCalc(meal,grams)
+#pie_chart()
