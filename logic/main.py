@@ -48,16 +48,17 @@ def macroCalc(food,grams):
                 prot_sum += float(int(grams[k]) / 100) * float(row[4])
 
     print "SUM: Calories", cal_sum, "Fat", fat_sum, "Carb", carb_sum, "Protein", prot_sum
-    pie_chart(cal_sum,fat_sum,carb_sum,prot_sum)
+    pie_chart(fat_sum,carb_sum,prot_sum,cal_sum)
     con.close()
 
 def pie_chart(a,b,c,d):
-    labels = 'Calories', 'Fat', 'Carb', 'Protein'
-    sizes = [a, b, c, d]
+    labels = 'Fat', 'Carb', 'Protein'
+    sizes = [a, b, c]
     colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']
-    explode = (0.1, 0, 0, 0)  # explode 1st slice
+    explode = (0.1, 0.1, 0.1)  # explode 1st slice
 
     # Plot
+    plt.title("Calories %s" % d,loc="center")
     plt.pie(sizes, explode=explode, labels=labels, colors=colors,
             autopct='%1.1f%%', shadow=True, startangle=140)
 
