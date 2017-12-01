@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  django_db:
+    image: postgres
+  django_web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - django_db
+  #app_db:
+  #  image: mysql
